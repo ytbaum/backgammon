@@ -10,6 +10,7 @@ public class Board {
     private static final int BOARD_WIDTH = 16;
     private static final char vertEdge = '|';
     private static final char horizEdge = '=';
+    private static final char[] pieces = {' ', 'X', 'O'};
 
     private Space[] spaces;
 
@@ -21,35 +22,36 @@ public class Board {
 
     public Board()
     {
+
         this.spaces = new Space[this.NUM_SPACES];
         for (int i = 0; i < this.NUM_SPACES; i++) { 
             this.spaces[i] = new Space();
         }
 
         // set up Player 1's spaces
-        this.spaces[0].setPieceType('X');
+        this.spaces[0].setPlayer(1);
         this.spaces[0].setNumPieces(2);
 
-        this.spaces[11].setPieceType('X');
+        this.spaces[11].setPlayer(1);
         this.spaces[11].setNumPieces(5);
 
-        this.spaces[16].setPieceType('X');
+        this.spaces[16].setPlayer(1);
         this.spaces[16].setNumPieces(3);
 
-        this.spaces[18].setPieceType('X');
+        this.spaces[18].setPlayer(1);
         this.spaces[18].setNumPieces(5);
 
         // set up Player 2's spaces
-        this.spaces[23].setPieceType('O');
+        this.spaces[23].setPlayer(2);
         this.spaces[23].setNumPieces(2);
 
-        this.spaces[12].setPieceType('O');
+        this.spaces[12].setPlayer(2);
         this.spaces[12].setNumPieces(5);
 
-        this.spaces[7].setPieceType('O');
+        this.spaces[7].setPlayer(2);
         this.spaces[7].setNumPieces(3);
 
-        this.spaces[5].setPieceType('O');
+        this.spaces[5].setPlayer(2);
         this.spaces[5].setNumPieces(5);
     }
 
@@ -170,11 +172,12 @@ public class Board {
             }
 
             int numPieces = this.spaces[i].getNumPieces();
-            char pieceType = this.spaces[i].getPieceType();
-            if (pieceType == ' ') {
+            int player = this.spaces[i].getPlayer();
+            char piece = this.pieces[player];
+            if (piece == ' ') {
                 sb.append(' ');
             } else if (numPieces - 1 >= row) {
-                sb.append(pieceType);
+                sb.append(piece);
 
             // we're on a deeper depth than the number of pieces in that row
             } else {
@@ -199,13 +202,14 @@ public class Board {
             }
 
             int numPieces = this.spaces[i].getNumPieces();
-            char pieceType = this.spaces[i].getPieceType();
+            int player = this.spaces[i].getPlayer();
+            char piece = this.pieces[player];
             int lowerBoardDepth = this.getLowerBoardDepth();
-            if (pieceType == ' ') {
+            if (piece == ' ') {
                 sb.append(' ');
             // since we're appending rows downward, but numPieces on a space is counted up from the beginning of the space, need to compare against lowerBoardDepth - row instead of just against row, i.e. need to "flip" the lower board so that pieces are being counted in the same direction that we're printing rows
             } else if (numPieces >= lowerBoardDepth - row) {
-                sb.append(pieceType);
+                sb.append(piece);
 
             // we're on a deeper depth than the number of pieces in that row
             } else {

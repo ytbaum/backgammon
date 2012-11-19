@@ -2,16 +2,17 @@ package board;
 
 public class Space {
 
-    private char pieceType = ' '; 
+    private int player = 0; 
     private int numPieces = 0;
 
-    public char getPieceType()
+    public int getPlayer()
     {
-        return this.pieceType;
+        return this.player;
     }
 
-    public void setPieceType(char newPieceType) {
-        this.pieceType = newPieceType;
+    public void setPlayer(int newPlayer)
+    {
+        this.player = newPlayer;
         return;
     }
 
@@ -29,6 +30,6 @@ public class Space {
     @Override
     public String toString()
     {
-        return this.pieceType + " " + Integer.toString(this.numPieces);
+        return "Player: " + Integer.toString(this.player) + "   NumPieces: " + Integer.toString(this.numPieces);
     }
 }
