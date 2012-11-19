@@ -57,7 +57,6 @@ public class Board {
 
     public void test()
     {
-        this.display(); 
         return;
     }
 
@@ -221,4 +220,33 @@ public class Board {
         String output = sb.toString();
         return output;
     }
+
+    public boolean movePiece(int origin, int dest, int player)
+    {
+
+        int originPlayer = this.spaces[origin].getPlayer();
+        if (player != originPlayer) {
+            System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
+            System.exit(1);
+        }
+        
+        this.spaces[origin].removePiece();
+        this.spaces[dest].addPiece(player);
+        return true;
+    }
+
+    public void movePieceToBar()
+    {
+
+        return;
+    }
+
+        // To-Dos in an executeTurn method:
+        // check if the player can legally move to the space
+        // (is it occupied?)
+        // does the move match what the die says the player can do?
+        // does the player have a guy he needs to get off the bar?
+        // is the player's only move of that space blocked?
+        // (i.e., know the player has no legal moves remaining)
+        // does the player have a piece to move from the space?
 }
