@@ -3,6 +3,7 @@ package board;
 import board.Space;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
 
@@ -11,6 +12,7 @@ public class Board {
     private static final char vertEdge = '|';
     private static final char horizEdge = '=';
     private static final char[] pieces = {' ', 'X', 'O'};
+    private static int[] bar;
 
     private Space[] spaces;
 
@@ -27,6 +29,8 @@ public class Board {
         for (int i = 0; i < this.NUM_SPACES; i++) { 
             this.spaces[i] = new Space();
         }
+
+        this.bar = new int[2];
 
         // set up Player 1's spaces
         this.spaces[0].setPlayer(1);
@@ -57,6 +61,8 @@ public class Board {
 
     public void test()
     {
+        this.display();
+        this.moveLoop();
         return;
     }
 
@@ -237,7 +243,6 @@ public class Board {
 
     public void movePieceToBar()
     {
-
         return;
     }
 
@@ -249,4 +254,34 @@ public class Board {
         // is the player's only move of that space blocked?
         // (i.e., know the player has no legal moves remaining)
         // does the player have a piece to move from the space?
+
+    public void moveLoop() {
+
+        Scanner input = new Scanner(System.in);
+        String moveString, yesOrNo; 
+        String[] moveAsStringArray;
+
+        int origin, dest, player;
+
+        while (true) {
+            System.out.println("enter an origin, a destination, and a player, separated by whitespace:");
+            moveString = input.nextLine(); 
+            moveAsStringArray = moveString.split("\\s");
+
+            origin = Integer.parseInt(moveAsStringArray[0]);
+            dest = Integer.parseInt(moveAsStringArray[1]);
+            player = Integer.parseInt(moveAsStringArray[2]);
+
+            this.movePiece(origin, dest, player);
+            this.display();
+
+            System.out.println("again?");
+            yesOrNo = input.nextLine();
+            if (yesOrNo == "n") {
+                break;
+            }
+        }    
+
+        return;
+    }
 }
