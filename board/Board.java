@@ -178,6 +178,12 @@ public class Board {
         return Math.max(this.bar[0], this.bar[1]);
     }
 
+    private void addPieceToBar(int player)
+    {
+        this.bar[player] += 1;
+        return;
+    }
+
     public void display()
     {
         String delim = "\n";
