@@ -13,6 +13,7 @@ public class Board {
     public static final int PLAYER2 = 1;
     public static final int NO_PLAYER = 2;
     public static final int BAR_SPACE = -1;
+    public static final int HOME_SPACE = 25;
 
     // display-related constants
     private static final int BOARD_WIDTH = 16;
@@ -23,6 +24,7 @@ public class Board {
 
     private Space[] spaces;
     private int[] bar = {0, 0};
+    private int[] home = {0, 0};
 
     public static void main(String[] args)
     {
@@ -215,6 +217,11 @@ public class Board {
 
         sb.append(this.getHorizBorder() + delim);
 
+        sb.append(delim);
+
+        sb.append("Home for Player 1: " + Integer.toString(this.home[PLAYER1]) + delim);
+        sb.append("Home for Player 2: " + Integer.toString(this.home[PLAYER2]) + delim);
+
         String output = sb.toString();
         System.out.println(output);
         return; 
@@ -311,14 +318,19 @@ public class Board {
             this.spaces[origin].removePiece();
         }
 
-        // if there's a lone opposing piece, send it to the bar
-        if (this.spaces[dest].hasExposedPiece(player)) {
-            int occupyingPlayer = this.spaces[dest].getPlayer();
-            this.spaces[dest].removePiece();     
-            this.addPieceToBar(occupyingPlayer);
-        }
+        if (dest == HOME_SPACE) {
+            this.home[player] += 1;
+        } else {
 
-        this.spaces[dest].addPiece(player);
+            // if there's a lone opposing piece, send it to the bar
+            if (this.spaces[dest].hasExposedPiece(player)) {
+                int occupyingPlayer = this.spaces[dest].getPlayer();
+                this.spaces[dest].removePiece();     
+                this.addPieceToBar(occupyingPlayer);
+            }
+    
+            this.spaces[dest].addPiece(player);
+        }
         return true;
     }
 
@@ -358,7 +370,7 @@ public class Board {
 
             System.out.println("again?");
             yesOrNo = input.nextLine();
-            if (yesOrNo == "n") {
+            if (yesOrNo.toLowerCase().charAt(0) == 'n') {
                 break;
             }
         }    
