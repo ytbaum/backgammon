@@ -286,13 +286,19 @@ public class Board {
 
     public boolean movePiece(int origin, int dest, int player)
     {
-
         int originPlayer = this.spaces[origin].getPlayer();
         if (player != originPlayer) {
             System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
             System.exit(1);
         }
-        
+
+        // if there's a lone opposing piece, send it to the bar
+        if (this.spaces[dest].hasExposedPiece(player)) {
+            int occupyingPlayer = this.spaces[dest].getPlayer();
+            this.spaces[dest].removePiece();     
+            this.addPieceToBar(occupyingPlayer);
+        }
+
         this.spaces[origin].removePiece();
         this.spaces[dest].addPiece(player);
         return true;

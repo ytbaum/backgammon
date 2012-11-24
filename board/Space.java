@@ -82,6 +82,10 @@ public class Space {
             System.out.println("ERROR (removePiece): current piece count is " + Integer.toString(this.numPieces));
             System.exit(1);
         } 
+
+        if (this.numPieces == 0) {
+            this.player = Board.NO_PLAYER;
+        }
         
         return;
     }    
@@ -89,6 +93,12 @@ public class Space {
     public boolean isEmpty()
     {
         return this.player == Board.NO_PLAYER;
+    }
+
+    // does this space have a lone piece and is it being occupied by the player opposite the player whose turn it is?
+    public boolean hasExposedPiece(int curPlayer)
+    {
+        return (this.player != curPlayer && this.numPieces == 1);
     }
 
 }
