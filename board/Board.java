@@ -7,12 +7,15 @@ import java.util.Scanner;
 
 public class Board {
 
+    // game-play-related constants
     private static final int NUM_SPACES = 24;
-    private static final int BOARD_WIDTH = 16;
     public static final int PLAYER1 = 0;
     public static final int PLAYER2 = 1;
     public static final int NO_PLAYER = 2;
+    public static final int BAR_SPACE = -1;
 
+    // display-related constants
+    private static final int BOARD_WIDTH = 16;
     private static final char EMPTY_SPACE = ' ';
     private static final char vertEdge = '|';
     private static final char horizEdge = '=';
@@ -286,10 +289,19 @@ public class Board {
 
     public boolean movePiece(int origin, int dest, int player)
     {
-        int originPlayer = this.spaces[origin].getPlayer();
-        if (player != originPlayer) {
-            System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
-            System.exit(1);
+        if (origin == BAR_SPACE) {
+            if (this.bar[player] < 1) {
+                System.out.println("ERROR: player is trying to move a piece from the bar, but has no pieces on the bar");
+            }
+
+            this.bar[player]--;
+        } else {
+            int originPlayer = this.spaces[origin].getPlayer();
+            if (player != originPlayer) {
+                System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
+                System.exit(1);
+            }
+            this.spaces[origin].removePiece();
         }
 
         // if there's a lone opposing piece, send it to the bar
@@ -299,7 +311,6 @@ public class Board {
             this.addPieceToBar(occupyingPlayer);
         }
 
-        this.spaces[origin].removePiece();
         this.spaces[dest].addPiece(player);
         return true;
     }
