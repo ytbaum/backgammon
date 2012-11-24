@@ -2,7 +2,7 @@ package board;
 
 public class Space {
 
-    private int player = 0; 
+    private int player = Board.NO_PLAYER; 
     private int numPieces = 0;
 
     public int getPlayer()
@@ -36,7 +36,7 @@ public class Space {
     public void addPiece(int curPlayer)
     {
 
-        if (this.player == 0) {
+        if (this.player == Board.NO_PLAYER) {
             this.player = curPlayer;
             this.numPieces += 1;
             return;
@@ -85,4 +85,10 @@ public class Space {
         
         return;
     }    
+
+    public boolean isEmpty()
+    {
+        return this.player == Board.NO_PLAYER;
+    }
+
 }
