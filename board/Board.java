@@ -290,6 +290,11 @@ public class Board {
     public boolean movePiece(int origin, int dest, int player)
     {
 
+        if (this.bar[player] > 0 && origin != BAR_SPACE) {
+            System.out.println("ERROR: you must first move your piece off the bar"); 
+            System.exit(1);
+        }
+
         if (origin == BAR_SPACE) {
             if (this.bar[player] < 1) {
                 System.out.println("ERROR: player is trying to move a piece from the bar, but has no pieces on the bar");
