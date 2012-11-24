@@ -135,7 +135,7 @@ public class Board {
                 sb.append(this.vertEdge).append(this.vertEdge);
             }
             
-            sb.append(' ');           
+            sb.append(EMPTY_SPACE);           
         }
         sb.append(this.vertEdge);
 
