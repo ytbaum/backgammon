@@ -12,9 +12,9 @@ public class Board {
     private static final char vertEdge = '|';
     private static final char horizEdge = '=';
     private static final char[] pieces = {' ', 'X', 'O'};
-    private static int[] bar;
 
     private Space[] spaces;
+    private int[] bar = {0, 0};
 
     public static void main(String[] args)
     {
@@ -29,8 +29,6 @@ public class Board {
         for (int i = 0; i < this.NUM_SPACES; i++) { 
             this.spaces[i] = new Space();
         }
-
-        this.bar = new int[2];
 
         // set up Player 1's spaces
         this.spaces[0].setPlayer(1);
@@ -139,6 +137,41 @@ public class Board {
         return output;
     }
 
+    private String getBarRow(int row)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(this.vertEdge);
+        for (int i = 0; i < (this.NUM_SPACES / 2) + 2; i++) {
+            if (i == (this.NUM_SPACES / 4)) {
+                if (this.bar[0] > row) {
+                    sb.append(this.pieces[1]);
+                } else {
+                    sb.append(this.vertEdge);
+                }
+            } else if (i == (this.NUM_SPACES / 4) + 1) {
+                if (this.bar[1] > row) {
+                    sb.append(this.pieces[2]);
+                } else {
+                    sb.append(this.vertEdge);
+                }
+            } else {
+                sb.append(' ');
+            }
+        }
+
+        sb.append(this.vertEdge);
+
+        String output = sb.toString();
+        return output;
+
+    }
+
+    private int getBarMaxPieces()
+    {
+        return Math.max(this.bar[0], this.bar[1]);
+    }
+
     public void display()
     {
         String delim = "\n";
@@ -149,6 +182,13 @@ public class Board {
         int upperBoardDepth = this.getUpperBoardDepth(); 
         for (int i = 0; i < upperBoardDepth; i++) {
             sb.append(this.getUpperBoardRow(i) + delim);
+        }
+
+        sb.append(this.getMiddleBoardRow() + delim);
+
+        int barMaxPieces = this.getBarMaxPieces();
+        for (int i = 0; i < barMaxPieces; i++) {
+            sb.append(this.getBarRow(i) + delim);
         }
 
         sb.append(this.getMiddleBoardRow() + delim);
