@@ -297,6 +297,11 @@ public class Board {
     public boolean movePiece(int origin, int dest, int player)
     {
 
+        if (!this.directionIsCorrect(origin, dest, player)) {
+            System.out.println("ERROR: you are moving in the wrong direction!");
+            System.exit(1);
+        }
+
         if (this.bar[player] > 0 && origin != BAR_SPACE) {
             System.out.println("ERROR: you must first move your piece off the bar"); 
             System.exit(1);
@@ -334,9 +339,19 @@ public class Board {
         return true;
     }
 
-    public void movePieceToBar()
+    public boolean directionIsCorrect(int origin, int dest, int player)
     {
-        return;
+        switch(player) {
+            case PLAYER1:
+                return (dest > origin);
+            case PLAYER2:
+                return (origin > dest);
+            default:
+                System.out.println("Error: a player was passed in as an argument and it wasn't PLAYER1 or PLAYER2");
+                System.exit(1);
+        }
+        
+        return false;
     }
 
         // To-Dos in an executeTurn method:
