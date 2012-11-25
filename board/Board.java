@@ -26,11 +26,6 @@ public class Board {
     private int[] bar = {0, 0};
     private int[] home = {0, 0};
 
-    public static void main(String[] args)
-    {
-        Board b = new Board();
-        b.test();
-    }
 
     public Board()
     {
