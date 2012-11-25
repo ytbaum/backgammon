@@ -1,17 +1,12 @@
 package board;
 
 import board.Space;
-
-import java.util.ArrayList;
-import java.util.Scanner;
+import game.Backgammon;
 
 public class Board {
 
     // game-play-related constants
     private static final int NUM_SPACES = 24;
-    public static final int PLAYER1 = 0;
-    public static final int PLAYER2 = 1;
-    public static final int NO_PLAYER = 2;
     public static final int BAR_SPACE = -1;
     public static final int HOME_SPACE = 25;
 
@@ -36,29 +31,29 @@ public class Board {
         }
 
         // set up Player 1's spaces
-        this.spaces[0].setPlayer(PLAYER1);
+        this.spaces[0].setPlayer(Backgammon.PLAYER1);
         this.spaces[0].setNumPieces(2);
 
-        this.spaces[11].setPlayer(PLAYER1);
+        this.spaces[11].setPlayer(Backgammon.PLAYER1);
         this.spaces[11].setNumPieces(5);
 
-        this.spaces[16].setPlayer(PLAYER1);
+        this.spaces[16].setPlayer(Backgammon.PLAYER1);
         this.spaces[16].setNumPieces(3);
 
-        this.spaces[18].setPlayer(PLAYER1);
+        this.spaces[18].setPlayer(Backgammon.PLAYER1);
         this.spaces[18].setNumPieces(5);
 
         // set up Player 2's spaces
-        this.spaces[23].setPlayer(PLAYER2);
+        this.spaces[23].setPlayer(Backgammon.PLAYER2);
         this.spaces[23].setNumPieces(2);
 
-        this.spaces[12].setPlayer(PLAYER2);
+        this.spaces[12].setPlayer(Backgammon.PLAYER2);
         this.spaces[12].setNumPieces(5);
 
-        this.spaces[7].setPlayer(PLAYER2);
+        this.spaces[7].setPlayer(Backgammon.PLAYER2);
         this.spaces[7].setNumPieces(3);
 
-        this.spaces[5].setPlayer(PLAYER2);
+        this.spaces[5].setPlayer(Backgammon.PLAYER2);
         this.spaces[5].setNumPieces(5);
     }
 
@@ -66,7 +61,6 @@ public class Board {
     {
         Space sp = new Space();
         this.display();
-        this.moveLoop();
         return;
     }
 
@@ -151,13 +145,13 @@ public class Board {
         for (int i = 0; i < (this.NUM_SPACES / 2) + 2; i++) {
             if (i == (this.NUM_SPACES / 4)) {
                 if (this.bar[0] > row) {
-                    sb.append(this.pieces[PLAYER1]);
+                    sb.append(this.pieces[Backgammon.PLAYER1]);
                 } else {
                     sb.append(this.vertEdge);
                 }
             } else if (i == (this.NUM_SPACES / 4) + 1) {
                 if (this.bar[1] > row) {
-                    sb.append(this.pieces[PLAYER2]);
+                    sb.append(this.pieces[Backgammon.PLAYER2]);
                 } else {
                     sb.append(this.vertEdge);
                 }
@@ -214,8 +208,8 @@ public class Board {
 
         sb.append(delim);
 
-        sb.append("Home for Player 1: " + Integer.toString(this.home[PLAYER1]) + delim);
-        sb.append("Home for Player 2: " + Integer.toString(this.home[PLAYER2]) + delim);
+        sb.append("Home for Player 1: " + Integer.toString(this.home[Backgammon.PLAYER1]) + delim);
+        sb.append("Home for Player 2: " + Integer.toString(this.home[Backgammon.PLAYER2]) + delim);
 
         String output = sb.toString();
         System.out.println(output);
@@ -291,37 +285,15 @@ public class Board {
 
     public boolean movePiece(int origin, int dest, int player)
     {
-
-        if (!this.directionIsCorrect(origin, dest, player)) {
-            System.out.println("ERROR: you are moving in the wrong direction!");
-            System.exit(1);
-        }
-
-        if (this.bar[player] > 0 && origin != BAR_SPACE) {
-            System.out.println("ERROR: you must first move your piece off the bar"); 
-            System.exit(1);
-        }
-
         if (origin == BAR_SPACE) {
-            if (this.bar[player] < 1) {
-                System.out.println("ERROR: player is trying to move a piece from the bar, but has no pieces on the bar");
-                System.exit(1);
-            }
-
             this.bar[player]--;
         } else {
-            int originPlayer = this.spaces[origin].getPlayer();
-            if (player != originPlayer) {
-                System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
-                System.exit(1);
-            }
             this.spaces[origin].removePiece();
         }
 
         if (dest == HOME_SPACE) {
             this.home[player] += 1;
         } else {
-
             // if there's a lone opposing piece, send it to the bar
             if (this.spaces[dest].hasExposedPiece(player)) {
                 int occupyingPlayer = this.spaces[dest].getPlayer();
@@ -334,20 +306,16 @@ public class Board {
         return true;
     }
 
-    public boolean directionIsCorrect(int origin, int dest, int player)
+    public int getBarCount(int player)
     {
-        switch(player) {
-            case PLAYER1:
-                return (dest > origin);
-            case PLAYER2:
-                return (origin > dest);
-            default:
-                System.out.println("Error: a player was passed in as an argument and it wasn't PLAYER1 or PLAYER2");
-                System.exit(1);
-        }
-        
-        return false;
+        return this.bar[player];
     }
+
+    public int getPlayer(int space)
+    {
+        return this.spaces[space].getPlayer();
+    }
+
 
         // To-Dos in an executeTurn method:
         // check if the player can legally move to the space
@@ -358,33 +326,4 @@ public class Board {
         // (i.e., know the player has no legal moves remaining)
         // does the player have a piece to move from the space?
 
-    public void moveLoop() {
-
-        Scanner input = new Scanner(System.in);
-        String moveString, yesOrNo; 
-        String[] moveAsStringArray;
-
-        int origin, dest, player;
-
-        while (true) {
-            System.out.println("enter an origin, a destination, and a player, separated by whitespace:");
-            moveString = input.nextLine(); 
-            moveAsStringArray = moveString.split("\\s");
-
-            origin = Integer.parseInt(moveAsStringArray[0]);
-            dest = Integer.parseInt(moveAsStringArray[1]);
-            player = Integer.parseInt(moveAsStringArray[2]);
-
-            this.movePiece(origin, dest, player);
-            this.display();
-
-            System.out.println("again?");
-            yesOrNo = input.nextLine();
-            if (yesOrNo.toLowerCase().charAt(0) == 'n') {
-                break;
-            }
-        }    
-
-        return;
-    }
 }

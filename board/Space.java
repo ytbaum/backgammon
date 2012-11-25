@@ -1,8 +1,9 @@
 package board;
+import game.Backgammon;
 
 public class Space {
 
-    private int player = Board.NO_PLAYER; 
+    private int player = Backgammon.NO_PLAYER; 
     private int numPieces = 0;
 
     public int getPlayer()
@@ -36,7 +37,7 @@ public class Space {
     public void addPiece(int curPlayer)
     {
 
-        if (this.player == Board.NO_PLAYER) {
+        if (this.player == Backgammon.NO_PLAYER) {
             this.player = curPlayer;
             this.numPieces += 1;
             return;
@@ -84,7 +85,7 @@ public class Space {
         } 
 
         if (this.numPieces == 0) {
-            this.player = Board.NO_PLAYER;
+            this.player = Backgammon.NO_PLAYER;
         }
         
         return;
@@ -92,7 +93,7 @@ public class Space {
 
     public boolean isEmpty()
     {
-        return this.player == Board.NO_PLAYER;
+        return this.player == Backgammon.NO_PLAYER;
     }
 
     // does this space have a lone piece and is it being occupied by the player opposite the player whose turn it is?
