@@ -30,6 +30,12 @@ public class Board {
             this.spaces[i] = new Space();
         }
 
+        this.initialize();
+
+    }
+
+    private void initialize()
+    {
         // set up Player 1's spaces
         this.spaces[0].setPlayer(Backgammon.PLAYER1);
         this.spaces[0].setNumPieces(2);
@@ -55,6 +61,8 @@ public class Board {
 
         this.spaces[5].setPlayer(Backgammon.PLAYER2);
         this.spaces[5].setNumPieces(5);
+
+        return;
     }
 
     public void test()
