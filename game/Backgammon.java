@@ -74,6 +74,8 @@ public class Backgammon
 
                 if (!moveString.equals("pass")) {
                     this.board.movePiece(origin, dest, player);
+                    int moveDistance = Math.abs(dest - origin);
+                    availableMoves[moveDistance - 1]--;
                     this.board.display();
                     this.winner = this.checkForWinner();
                 }
@@ -157,7 +159,7 @@ public class Backgammon
         // is the move allowed to the player by the dice roll?
         int moveDistance = Math.abs(dest - origin);
         if (availableMoves[moveDistance - 1] == 0) {
-            System.out.println("ERROR: you have not rolled a " + Integer.toString(moveDistance));
+            System.out.println("ERROR: you have no moves of distance " + Integer.toString(moveDistance) + " remaining");
             return false;
         }
 
