@@ -137,23 +137,25 @@ public class Backgammon
         }
 
         // is the player trying to move a non-bar piece when he/she has pieces on the bar?
-        if (this.board.getBarCount(player) > 0 && origin != this.board.BAR_SPACE) {
+        if (this.board.getBarCount(player) > 0 && origin != this.board.barSpace[player]) {
             System.out.println("ERROR: you must first move your piece off the bar"); 
             return false;
         }
 
         // is the player trying to move a piece from the bar when he/she doesn't have any there (will only be a problem when typing in moves on the command line)
-        if (origin == this.board.BAR_SPACE && this.board.getBarCount(player) < 1) {
+        if (origin == this.board.barSpace[player] && this.board.getBarCount(player) < 1) {
             System.out.println("ERROR: player is trying to move a piece from the bar, but has no pieces on the bar");
             return false;
         }
 
         // does the player have pieces on the origin space?
         // (this problem is command-line only)
-        int originPlayer = this.board.getPlayer(origin);
-        if (player != originPlayer) {
-            System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
-            return false;
+        if (origin >= 0 && origin <= this.board.NUM_SPACES) {
+            int originPlayer = this.board.getPlayer(origin);
+            if (player != originPlayer) {
+                System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
+                return false;
+            }
         }
 
         // is the move allowed to the player by the dice roll?

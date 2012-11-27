@@ -6,9 +6,9 @@ import game.Backgammon;
 public class Board {
 
     // game-play-related constants
-    private static final int NUM_SPACES = 24;
-    public static final int BAR_SPACE = -1;
-    public static final int HOME_SPACE = 25;
+    public static final int NUM_SPACES = 24;
+    public static final int[] barSpace = {-1, NUM_SPACES};
+    public static final int[] homeSpace = {NUM_SPACES, -1};
 
     // display-related constants
     private static final int BOARD_WIDTH = 16;
@@ -285,13 +285,13 @@ public class Board {
 
     public boolean movePiece(int origin, int dest, int player)
     {
-        if (origin == BAR_SPACE) {
+        if (origin == this.barSpace[player]) {
             this.bar[player]--;
         } else {
             this.spaces[origin].removePiece();
         }
 
-        if (dest == HOME_SPACE) {
+        if (dest == this.homeSpace[player]) {
             this.home[player] += 1;
         } else {
             // if there's a lone opposing piece, send it to the bar
