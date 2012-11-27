@@ -34,11 +34,14 @@ public class Backgammon
     public void test()
     {
         this.board.display();
-        this.moveLoop();
+        //this.moveLoop();
+
+        this.commandLoop();
         return;
     }
 
-    public void moveLoop() {
+    public void moveLoop()
+    {
 
         Scanner input = new Scanner(System.in);
         String moveString = "", yesOrNo; 
@@ -86,6 +89,35 @@ public class Backgammon
         }    
 
         return;
+    }
+
+    private void commandLoop()
+    {
+        boolean quit = false;
+        String cmd = "";
+        String[] cmdArray;
+
+        while (!quit) {
+            Scanner s = new Scanner(System.in);
+            cmd = s.nextLine();
+            cmdArray = cmd.split(" ");
+
+            switch(cmdArray[0]) {
+                case "quit":
+                    quit = true;
+                    break;
+                case "printFunnyStuff":
+                    System.out.println("ha ha!");
+                    break;
+                default:
+                    System.out.println("don't know that command, sorry");
+                    break;
+            }
+
+        }
+
+        return;
+
     }
 
     private void rollDice()
