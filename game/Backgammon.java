@@ -12,6 +12,7 @@ public class Backgammon
     private Board board;
     private int[] dice = {0, 0};
     private int currentPlayer = 0;
+    private boolean shouldCheckValidity = true;
 
     public static final int DIE_NUM_SIDES = 6;
     public static final int PLAYER1 = 0;
@@ -54,7 +55,6 @@ public class Backgammon
         while (this.winner == NO_PLAYER) {
             System.out.println("Rolling the dice...");
             this.rollDice();
-            System.out.println(this.getDiceString());
 
             int[] availableMoves = this.getAvailableMoves();
             
@@ -106,9 +106,58 @@ public class Backgammon
                 case "quit":
                     quit = true;
                     break;
+
                 case "printFunnyStuff":
                     System.out.println("ha ha!");
                     break;
+
+                case "rollDice":
+                    this.rollDice();
+                    break;
+
+                case "printCurPlayer":
+                    System.out.println(Integer.toString(this.currentPlayer));
+                    break;
+
+                case "noValidity":
+                    this.shouldCheckValidity = false;
+                    break;
+
+                case "validity":
+                    this.shouldCheckValidity = true;
+                    break;
+
+                case "add":
+                    int space = Integer.parseInt(cmdArray[1]);
+                    int player = Integer.parseInt(cmdArray[2]);
+                    this.board.addPieceToSpace(space, player);
+                    this.board.display();
+                    break;
+
+                case "remove":
+                    int spaceToRemoveFrom = Integer.parseInt(cmdArray[1]);
+                    this.board.removePiece(spaceToRemoveFrom);
+                    this.board.display();
+                    break;
+
+                case "clearBoard":
+                    this.board.clear();
+                    this.board.display();
+                    break;
+
+
+                case "move":
+                    int origin = Integer.parseInt(cmdArray[1]);
+                    int dest = Integer.parseInt(cmdArray[2]);
+                    int[] availableMoves = this.getAvailableMoves();
+                    if (!this.shouldCheckValidity || this.checkMoveValidity(origin, dest, this.currentPlayer, availableMoves)) {
+                        this.board.movePiece(origin, dest, this.currentPlayer);
+                        int moveDistance = Math.abs(dest - origin);
+                        availableMoves[moveDistance - 1]--;
+                    }
+                    this.board.display();
+                    break;
+
                 default:
                     System.out.println("don't know that command, sorry");
                     break;
@@ -126,6 +175,8 @@ public class Backgammon
         for (int i = 0; i < this.dice.length; i++) {
             this.dice[i] = rand.nextInt(DIE_NUM_SIDES) + 1;
         }
+
+        System.out.println(this.getDiceString());
 
         return;
     }

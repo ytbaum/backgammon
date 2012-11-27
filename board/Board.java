@@ -65,6 +65,17 @@ public class Board {
         return;
     }
 
+    public void clear()
+    {
+        for (int i = 0; i < this.NUM_SPACES; i++) {
+            this.spaces[i].setPlayer(Backgammon.NO_PLAYER);
+            this.spaces[i].setNumPieces(0);
+        }
+
+        return;
+
+    }
+
     public void test()
     {
         Space sp = new Space();
@@ -324,6 +335,17 @@ public class Board {
         return this.spaces[space].getPlayer();
     }
 
+    public void addPieceToSpace(int space, int player)
+    {
+        this.spaces[space].addPiece(player);
+        return;
+    }
+
+    public void removePiece(int space)
+    {
+        this.spaces[space].removePiece();
+        return;
+    }
 
         // To-Dos in an executeTurn method:
         // check if the player can legally move to the space
