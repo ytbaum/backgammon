@@ -271,6 +271,12 @@ public class Backgammon
             }
         }
 
+        if (dest == this.board.homeSpace[player] && !this.canMoveHome(player))
+        {
+            System.out.println("ERROR: player still has pieces outside the home board and thus cannot move pieces off the board");
+            return false;
+        }
+
         // if none of the above problems occurred, the move is valid
         return true;
     }
@@ -304,5 +310,18 @@ public class Backgammon
     private int getOtherPlayer(int player)
     {
         return (player + 1) % 2;
+    }
+
+    // is the player eligible to move pieces off the board?
+    private boolean canMoveHome(int player)
+    {
+        for (int i = 0; i < this.board.NUM_SPACES; i++) {
+            int spacePlayer = this.board.getPlayer(i);
+            if (spacePlayer == player) {
+                return false; 
+            }
+        }
+
+        return true;
     }
 }
