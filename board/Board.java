@@ -335,6 +335,11 @@ public class Board {
         return this.spaces[space].getPlayer();
     }
 
+    public int getNumPieces(int space)
+    {
+        return this.spaces[space].getNumPieces();
+    }
+
     public void addPieceToSpace(int space, int player)
     {
         this.spaces[space].addPiece(player);

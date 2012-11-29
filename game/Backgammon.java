@@ -69,7 +69,10 @@ public class Backgammon
                     }
                     moveAsStringArray = moveString.split("\\s");
                     origin = Integer.parseInt(moveAsStringArray[0]);
-                    dest = Integer.parseInt(moveAsStringArray[1]);
+                    if (moveAsStringArray.length > 1) {
+                        dest = Integer.parseInt(moveAsStringArray[1]);
+                    }
+
                     player = this.currentPlayer;
 
                     moveIsValid = this.checkMoveValidity(origin, dest, player, availableMoves);
@@ -213,6 +216,11 @@ public class Backgammon
     // check for various ways the move might be invalid
     private boolean checkMoveValidity(int origin, int dest, int player, int[] availableMoves)
     {
+        if (origin < -1 || dest < -1 || origin > this.board.NUM_SPACES || dest > this.board.NUM_SPACES) {
+            System.out.println("ERROR: move out of range");
+            return false;
+        }
+
         // is the player moving in the right direction?
         if (!this.directionIsCorrect(origin, dest, player)) {
             System.out.println("ERROR: you are moving in the wrong direction!");
@@ -248,6 +256,21 @@ public class Backgammon
             return false;
         }
 
+        // is the space occupied by the opposing player?
+        if (dest != this.board.homeSpace[player] && this.board.getPlayer(dest) == this.getOtherPlayer(player) && this.board.getNumPieces(dest) > 1) {
+            int numPieces = this.board.getNumPieces(dest);
+            if (numPieces == 0) {
+                System.out.println("ERROR: inconsistent state- space is occupied by player " + Integer.toString(player) + " but this.numPieces equals 0");
+                return false;
+            } else if (numPieces == 1) {
+                System.out.println("ERROR: space has not been cleared");
+                return false;
+            } else {
+                System.out.println("ERROR: space is occupied by the other player with more than one piece.");
+                return false;
+            }
+        }
+
         // if none of the above problems occurred, the move is valid
         return true;
     }
@@ -276,5 +299,10 @@ public class Backgammon
     {
         this.currentPlayer = (this.currentPlayer + 1) % 2;
         return;
+    }
+
+    private int getOtherPlayer(int player)
+    {
+        return (player + 1) % 2;
     }
 }
