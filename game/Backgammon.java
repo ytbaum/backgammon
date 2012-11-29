@@ -35,9 +35,9 @@ public class Backgammon
     public void test()
     {
         this.board.display();
-        //this.moveLoop();
+        this.moveLoop();
 
-        this.commandLoop();
+        //this.commandLoop();
         return;
     }
 
@@ -233,7 +233,7 @@ public class Backgammon
 
         // does the player have pieces on the origin space?
         // (this problem is command-line only)
-        if (origin >= 0 && origin <= this.board.NUM_SPACES) {
+        if (origin >= 0 && origin < this.board.NUM_SPACES) {
             int originPlayer = this.board.getPlayer(origin);
             if (player != originPlayer) {
                 System.out.println("ERROR: player is trying to move a piece from a space s/he doesn't have pieces on");
