@@ -148,6 +148,10 @@ public class Backgammon
                     this.board.display();
                     break;
 
+                case "passTheDice":
+                    this.passTheDice();
+                    break;
+                    
 
                 case "move":
                     int origin = Integer.parseInt(cmdArray[1]);
@@ -251,7 +255,7 @@ public class Backgammon
 
         // is the move allowed to the player by the dice roll?
         int moveDistance = Math.abs(dest - origin);
-        if (availableMoves[moveDistance - 1] == 0) {
+        if (moveDistance > this.DIE_NUM_SIDES || availableMoves[moveDistance - 1] == 0) {
             System.out.println("ERROR: you have no moves of distance " + Integer.toString(moveDistance) + " remaining");
             return false;
         }
@@ -315,13 +319,30 @@ public class Backgammon
     // is the player eligible to move pieces off the board?
     private boolean canMoveHome(int player)
     {
-        for (int i = 0; i < this.board.NUM_SPACES; i++) {
-            int spacePlayer = this.board.getPlayer(i);
-            if (spacePlayer == player) {
-                return false; 
-            }
+        switch (player) {
+            case PLAYER1:
+                for (int i = 0; i < this.board.NUM_SPACES - this.board.HOME_BOARD_NUM_SPACES; i++) {
+                    int spacePlayer = this.board.getPlayer(i);
+                    if (spacePlayer == player) {
+                        return false; 
+                    }
+                }
+                return true;
+
+            case PLAYER2:
+                for (int i = this.board.NUM_SPACES - 1; i > this.board.HOME_BOARD_NUM_SPACES - 1; i--) {
+                    int spacePlayer = this.board.getPlayer(i);
+                    if (spacePlayer == player) {
+                        return false; 
+                    }
+                }
+                return true;
+
+            default:
+                break;
+
         }
 
-        return true;
+        return false;
     }
 }

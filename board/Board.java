@@ -7,6 +7,7 @@ public class Board {
 
     // game-play-related constants
     public static final int NUM_SPACES = 24;
+    public static final int HOME_BOARD_NUM_SPACES = 6;
     public static final int[] barSpace = {-1, NUM_SPACES};
     public static final int[] homeSpace = {NUM_SPACES, -1};
 
